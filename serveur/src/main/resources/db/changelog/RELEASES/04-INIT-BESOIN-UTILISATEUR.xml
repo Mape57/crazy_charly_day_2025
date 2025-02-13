@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="create-salarie-competence" author="Thomas">
+    <changeSet id="create-besoin-utilisateur" author="Thomas">
         <createTable tableName="besoins_utilisateur">
             <column name="salarie_id" type="UUID">
                 <constraints primaryKey="true" foreignKeyName="fk_salarie_besoin" references="utilisateurs(id)"/>
@@ -15,7 +15,7 @@
             </column>
         </createTable>
 
-        <insert tableName="salarie_competences">
+        <insert tableName="besoins_utilisateur">
             <column name="salarie_id" value="7bdc0155-8ab2-4231-bd9e-a9528264d04b"/>
             <column name="besoin_id" value="9664ee08-e4a4-4cda-ba43-0f698173074b"/>
         </insert>
