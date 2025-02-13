@@ -1,5 +1,12 @@
 package charlyday.ccd.utilisateur;
 
+import charlyday.ccd.SalarieCompetence.SalarieCompetenceEntity;
+import charlyday.ccd.SalarieCompetence.SalarieCompetenceKey;
+import charlyday.ccd.SalarieCompetence.SalarieCompetenceService;
+import charlyday.ccd.competences.CompetenceDto;
+import charlyday.ccd.competences.CompetenceEntity;
+import charlyday.ccd.competences.CompetenceMapper;
+import charlyday.ccd.competences.CompetenceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -15,8 +22,10 @@ import java.util.UUID;
 @RequestMapping("salaries")
 public class SalarieController {
     private final UtilisateurService utilisateurService;
+    private final CompetenceService competenceService;
+    private final SalarieCompetenceService salarieCompetenceService;
     @Autowired
-    public SalarieController(UtilisateurService utilisateurService){this.utilisateurService = utilisateurService;}
+    public SalarieController(UtilisateurService utilisateurService,CompetenceService competenceService,SalarieCompetenceService salarieCompetenceService){this.utilisateurService = utilisateurService;this.competenceService = competenceService;this.salarieCompetenceService = salarieCompetenceService;}
 
     @CrossOrigin
     @Operation(summary = "Get all utilisateurs",description = "Returns all utilisateurs")
@@ -116,5 +125,107 @@ public class SalarieController {
         }else{
             return modif;
         }
+    }
+
+    @CrossOrigin
+    @Operation(summary = "Get competence for utilisateur",description = "Return competence with id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "500", description = "Internal server error - Utilisateur was not found")
+    })
+    @GetMapping("/{id}/competences")
+    public List<CompetenceDto> getCompetenceForSalarie(@PathVariable UUID id){
+        UtilisateurEntity entity = utilisateurService.getUtilisateurById(id);
+        List<CompetenceDto> list = CompetenceMapper.INSTANCE.mapToListDTO(utilisateurService.getUtilisateurById(id).getCompetences());
+        if (list == null){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Competences not found"
+            );
+        }else if(entity.getRole() != 1) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Utilisateur is not salarie"
+            );
+        }else if(list.size() == 0){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "No one competences for this salarie"
+            );
+        }else{
+            return list;
+        }
+    }
+
+    @CrossOrigin
+    @Operation(summary = "Create competence for salarie",description = "Create competence for salarie")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully created"),
+            @ApiResponse(responseCode = "404", description = "Internal server error - Competence was not create")
+    })
+    @PostMapping("{id}/competences")
+    public CompetenceDto createCompetenceForSalarie(@PathVariable UUID id, @RequestBody CreerCompetence creerCompetence){
+        UtilisateurDto utilisateurDto = UtilisateurMapper.INSTANCE.mapToDTO(utilisateurService.getUtilisateurById(id));
+        if (utilisateurDto == null ){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Utilisateur not found"
+            );
+        }else if(utilisateurDto.getRole() != 1){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Utilisateur is not salarie"
+            );
+        }
+
+        CompetenceDto dto = new CompetenceDto();
+        dto.setCategorie(creerCompetence.getCategorie());
+        dto.setLibelle(creerCompetence.getLibelle());
+        dto.setValide(creerCompetence.isValide());
+        if (creerCompetence.getId() == null){
+            dto.setId(UUID.randomUUID());
+            dto = CompetenceMapper.INSTANCE.mapToDTO(competenceService.createCompetence(CompetenceMapper.INSTANCE.mapToEntity(dto)));
+        }else{
+            dto.setId(creerCompetence.getId());
+        }
+
+        SalarieCompetenceEntity salarieCompetenceEntity = new SalarieCompetenceEntity();
+        salarieCompetenceEntity.setInteret(creerCompetence.getInteret());
+        SalarieCompetenceKey salarieCompetenceKey = new SalarieCompetenceKey();
+        salarieCompetenceKey.setSalarieId(id);
+        salarieCompetenceKey.setCompetenceId(dto.getId());
+        salarieCompetenceEntity.setSalarieCompetenceKey(salarieCompetenceKey);
+        SalarieCompetenceEntity entity = salarieCompetenceService.createSalarieCompetence(salarieCompetenceEntity);
+
+        return dto;
+    }
+
+    @CrossOrigin
+    @Operation(summary = "Delete competence for salarie",description = "Delete competence for salarie")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully deleted"),
+            @ApiResponse(responseCode = "500", description = "Internal server error - Competence was not delete")
+    })
+    @DeleteMapping("/{idSalarie}/competence/{idCompetence}")
+    public void deleteSalaries(@PathVariable UUID idSalarie,@PathVariable UUID idCompetence){
+        UtilisateurEntity entity = utilisateurService.getUtilisateurById(idSalarie);
+        if (entity == null){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Salarie not found"
+            );
+        }else if(entity.getRole() != 1){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Utilisateur is not salarie"
+            );
+        }
+
+        CompetenceEntity competence = competenceService.getCompetenceById(idCompetence);
+        if (competence == null){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Competence not found"
+            );
+        }
+
+        SalarieCompetenceEntity salarieCompetenceEntity = new SalarieCompetenceEntity();
+        SalarieCompetenceKey salarieCompetenceKey = new SalarieCompetenceKey();
+        salarieCompetenceKey.setCompetenceId(competence.getId());
+        salarieCompetenceKey.setSalarieId(entity.getId());
+        salarieCompetenceEntity.setSalarieCompetenceKey(salarieCompetenceKey);
+        salarieCompetenceService.deleteSalarieCompetence(salarieCompetenceEntity);
     }
 }
