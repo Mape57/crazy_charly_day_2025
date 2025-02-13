@@ -1,20 +1,11 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import {RouterView} from 'vue-router'
 import CardComponent from "@/components/CardComponent.vue";
 import CarouselComponent from "@/components/CarouselComponent.vue";
 </script>
 
 <template>
-
-  <RouterView />
-  <CarouselComponent/>
-  <CarouselComponent/>
-  <CarouselComponent/>
-  <CarouselComponent/>
-  <CarouselComponent/>
-  <CarouselComponent/>
-
-  <!-- <CardComponent title="Crazy Charly Day 2025" subtitle="Bienvenue sur Crazy Charly Day 2025" source="https://images.pexels.com/photos/5874652/pexels-photo-5874652.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" max="344" link="true"></CardComponent> -->
+  <RouterView/>
 </template>
 
 <style scoped>

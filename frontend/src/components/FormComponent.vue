@@ -84,7 +84,7 @@ h2 {
 }
 
 .divider {
-  height: 1px;
+  height: 2px;
   background-color: #D9D9D9;
   margin: 20px 0;
 }
