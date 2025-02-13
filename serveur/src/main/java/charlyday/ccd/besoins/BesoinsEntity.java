@@ -1,8 +1,6 @@
-package charlyday.ccd.Besoins;
+package charlyday.ccd.besoins;
 
 
-import charlyday.ccd.competences.CompetenceEntity;
-import charlyday.ccd.utilisateur.UtilisateurEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,14 +30,14 @@ public class BesoinsEntity implements Serializable {
 	@Column(name = "description")
 	private String description;
 
-	@Column(name = "competences_id")
-	private UUID competencesId;
+	@Column(name = "competence_id")
+	private UUID competenceId;
 
 	@Column(name = "date_service")
 	private Date dateService;
 
 	@Column(name = "salarie_id")
-	private String salarieId;
+	private UUID salarieId;
 
 	@Column(name = "duree")
 	private int duree;

@@ -1,4 +1,4 @@
-package charlyday.ccd.Besoins;
+package charlyday.ccd.besoins;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,7 +31,7 @@ public class BesoinsController {
 	@GetMapping
 	public List<BesoinsDto> getAllBesoins() {
 		List<BesoinsDto> besoins = BesoinsMapper.INSTANCE.mapToListDTO(besoinsService.getAllBesoins());
-		if (besoins == null || besoins.isEmpty()) {
+		if (besoins == null) {
 			throw new ResponseStatusException(
 					HttpStatus.NOT_FOUND, "Aucun besoin trouvé"
 			);

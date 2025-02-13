@@ -1,4 +1,4 @@
-package charlyday.ccd.Besoins;
+package charlyday.ccd.besoins;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

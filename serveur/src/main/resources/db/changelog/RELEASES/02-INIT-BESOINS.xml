@@ -29,5 +29,15 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <insert tableName="besoins">
+            <column name="id" value="9664ee08-e4a4-4cda-ba43-0f698173074b"/>
+            <column name="client_id" value="7bdc0155-8ab2-4231-bd9e-a9528264d04b"/>
+            <column name="description" value="Je test"/>
+            <column name="competence_id" value="611b06da-0925-45e9-aab2-b2dcf58eb17c"/>
+            <column name="date_service" value="2021-09-27"/>
+            <column name="salarie_id" value="7bdc0155-8ab2-4231-bd9e-a9528264d04b"/>
+            <column name="duree" value="2"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

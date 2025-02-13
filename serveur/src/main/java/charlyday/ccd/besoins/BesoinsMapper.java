@@ -1,4 +1,4 @@
-package charlyday.ccd.Besoins;
+package charlyday.ccd.besoins;
 
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;

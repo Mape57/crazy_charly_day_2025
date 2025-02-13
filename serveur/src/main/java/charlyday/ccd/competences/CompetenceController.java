@@ -18,8 +18,7 @@ import java.util.UUID;
 public class CompetenceController {
     private final CompetenceService competenceService;
     @Autowired
-    public CompetenceController(CompetenceService competenceService)
-    {this.competenceService = competenceService;}
+    public CompetenceController(CompetenceService competenceService) {this.competenceService = competenceService;}
 
     @CrossOrigin
     @Operation(summary = "Get all utilisateurs",description = "Returns all utilisateurs")
@@ -27,6 +26,7 @@ public class CompetenceController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "500", description = "Internal server error - Utilisateurs were not found")
     })
+    @GetMapping
     public List<CompetenceDto> getAllCompetences(){
         List<CompetenceDto> list = CompetenceMapper.INSTANCE.mapToListDTO(competenceService.getAllCompetences());
         if (list == null){

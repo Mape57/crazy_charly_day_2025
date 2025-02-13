@@ -1,9 +1,11 @@
 package charlyday.ccd.utilisateur;
 
+import charlyday.ccd.competences.CompetenceDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -19,4 +21,6 @@ public class UtilisateurDto {
     private String password;
     @Schema(name = "role",example = "2")
     private int role;
+
+    private List<CompetenceDto> competences;
 }

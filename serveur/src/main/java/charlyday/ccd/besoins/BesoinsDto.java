@@ -1,4 +1,4 @@
-package charlyday.ccd.Besoins;
+package charlyday.ccd.besoins;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -13,20 +13,20 @@ public class BesoinsDto {
 	@Schema(name = "id", example = "1")
 	private UUID id;
 
-	@Schema(name = "client_id", example = "2")
+	@Schema(name = "clientId", example = "2")
 	private UUID clientId;
 
-	@Schema(name = "description", example = "Description du besoin")
+	@Schema(name = "description", example = "3")
 	private String description;
 
-	@Schema(name = "competences_id", example = "3")
-	private UUID competencesId;
+	@Schema(name = "competenceId", example = "3")
+	private UUID competenceId;
 
-	@Schema(name = "date_service", example = "2025-01-01")
+	@Schema(name = "dateService", example = "2025-01-01")
 	private Date dateService;
 
-	@Schema(name = "salarie_id", example = "4")
-	private String salarieId;
+	@Schema(name = "salarieId", example = "4")
+	private UUID salarieId;
 
 	@Schema(name = "duree", example = "5")
 	private int duree;
