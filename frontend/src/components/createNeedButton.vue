@@ -2,7 +2,6 @@
 </script>
 
 <template>
-  dsfsfddskfjlkdfskmlffdggfddgfgfdfhhyygjdsdffdsfdsdfsfrgtgtrtghr
   <v-dialog max-width="500">
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
