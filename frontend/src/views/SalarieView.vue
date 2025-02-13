@@ -85,7 +85,7 @@ async function getMissionsBySalarieId(id) {
 
 async function getCompetences() {
   try {
-    const response = await axios.get('${apiBaseUrl}/competences')
+    const response = await axios.get(`${apiBaseUrl}/competences`)
         .then((res) => {
           user.value.competences = res.data;
         });
