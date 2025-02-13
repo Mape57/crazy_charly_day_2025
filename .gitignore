@@ -29,6 +29,7 @@ package-lock*.json
 # local env files
 *.env
 .env
+.jar
 
 # Log files
 npm-debug.log*
