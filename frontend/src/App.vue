@@ -1,9 +1,11 @@
 <script setup>
 import { RouterView } from 'vue-router'
+import CreateNeedButton from "@/components/createNeedButton.vue";
 </script>
 
 <template>
   <RouterView />
+  <createNeedButton/>
 </template>
 
 <style scoped>
