@@ -13,10 +13,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("salaries")
-public class SalarieController {
+public class ClientController {
     private final UtilisateurService utilisateurService;
     @Autowired
-    public SalarieController(UtilisateurService utilisateurService){this.utilisateurService = utilisateurService;}
+    public ClientController(UtilisateurService utilisateurService){this.utilisateurService = utilisateurService;}
 
     @CrossOrigin
     @Operation(summary = "Get all utilisateurs",description = "Returns all utilisateurs")
@@ -25,8 +25,8 @@ public class SalarieController {
             @ApiResponse(responseCode = "500", description = "Internal server error - Utilisateurs were not found")
     })
     @GetMapping
-    public List<UtilisateurDto> getAllSalaries(){
-        List<UtilisateurDto> list = UtilisateurMapper.INSTANCE.mapToListDTO(utilisateurService.getAllByRole(1));
+    public List<UtilisateurDto> getAllClient(){
+        List<UtilisateurDto> list = UtilisateurMapper.INSTANCE.mapToListDTO(utilisateurService.getAllByRole(2));
         if (list == null){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Utilisateurs not found"
@@ -43,10 +43,10 @@ public class SalarieController {
             @ApiResponse(responseCode = "404", description = "Internal server error - Utilisateur was not create")
     })
     @PostMapping
-    public UtilisateurDto createSalaries(@RequestBody UtilisateurDto utilisateurDto){
+    public UtilisateurDto createClient(@RequestBody UtilisateurDto utilisateurDto){
         UtilisateurDto utilisateur = utilisateurDto;
         utilisateur.setId(UUID.randomUUID());
-        utilisateur.setRole(1);
+        utilisateur.setRole(2);
         return UtilisateurMapper.INSTANCE.mapToDTO(utilisateurService.createUtilisateur(UtilisateurMapper.INSTANCE.mapToEntity(utilisateur)));
     }
 
@@ -57,13 +57,13 @@ public class SalarieController {
             @ApiResponse(responseCode = "404", description = "Internal server error - Utilisateur was not update")
     })
     @PatchMapping("/{id}")
-    public UtilisateurDto updateSalaries(@PathVariable UUID id, @RequestBody UtilisateurDto utilisateurDto){
+    public UtilisateurDto updateClient(@PathVariable UUID id, @RequestBody UtilisateurDto utilisateurDto){
         UtilisateurDto dto = UtilisateurMapper.INSTANCE.mapToDTO(utilisateurService.getUtilisateurById(id));
         if (dto == null){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Disponibility not found"
             );
-        }else if (dto.getRole() != 1) {
+        }else if (dto.getRole() != 2) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Utilisateur is not salarie"
             );
@@ -82,13 +82,13 @@ public class SalarieController {
             @ApiResponse(responseCode = "500", description = "Internal server error - Utilisateur was not delete")
     })
     @DeleteMapping("/{id}")
-    public void deleteSalaries(@PathVariable UUID id){
+    public void deleteClient(@PathVariable UUID id){
         UtilisateurEntity entity = utilisateurService.getUtilisateurById(id);
         if (entity == null){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Disponibility not found"
             );
-        }else if(entity.getRole() != 1){
+        }else if(entity.getRole() != 2){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Utilisateur is not salarie"
             );
@@ -103,13 +103,13 @@ public class SalarieController {
             @ApiResponse(responseCode = "500", description = "Internal server error - Utilisateur was not found")
     })
     @GetMapping("/{id}")
-    public UtilisateurDto getSalaries(@PathVariable UUID id){
+    public UtilisateurDto getClient(@PathVariable UUID id){
         UtilisateurDto modif = UtilisateurMapper.INSTANCE.mapToDTO(utilisateurService.getUtilisateurById(id));
         if (modif == null){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Utilisateur not found"
             );
-        }else if(modif.getRole() != 1){
+        }else if(modif.getRole() != 2){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Utilisateur is not salarie"
             );
