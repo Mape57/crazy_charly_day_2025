@@ -22,9 +22,6 @@
             <column name="date_service" type="date">
                 <constraints nullable="false"/>
             </column>
-            <column name="salarie_id" type="UUID">
-                <constraints foreignKeyName="fk_salarie" references="utilisateurs(id)"/>
-            </column>
             <column name="duree" type="int">
                 <constraints nullable="false"/>
             </column>

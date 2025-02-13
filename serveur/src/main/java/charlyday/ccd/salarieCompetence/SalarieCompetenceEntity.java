@@ -1,4 +1,4 @@
-package charlyday.ccd.SalarieCompetence;
+package charlyday.ccd.salarieCompetence;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;

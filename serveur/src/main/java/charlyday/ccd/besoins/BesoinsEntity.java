@@ -36,9 +36,6 @@ public class BesoinsEntity implements Serializable {
 	@Column(name = "date_service")
 	private Date dateService;
 
-	@Column(name = "salarie_id")
-	private UUID salarieId;
-
 	@Column(name = "duree")
 	private int duree;
 }
