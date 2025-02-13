@@ -4,6 +4,7 @@ import {onMounted, ref} from "vue";
 import axios from "axios";
 import FormComponent from "@/components/FormComponent.vue";
 
+
 const userStore = useUserStore();
 
 const user = ref({
@@ -104,6 +105,7 @@ onMounted(async () => {
       </div>
     </div>
   </main>
+
 </template>
 
 <style scoped>
