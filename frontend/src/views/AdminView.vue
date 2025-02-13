@@ -51,9 +51,6 @@ const clientItems = ref([]);
 const besoinItems = ref([]);
 
 const fields = ref([
-  { type: 'select', label: 'sélectionner un client', name: 'Qui ?:', items: clientItems, required: true },
-  { type: 'select', label: 'sélectionner un besoin', name: 'Quoi ?:', items: besoinItems, required: true },
-  { type: 'select', label: 'sélectionner un salarié', name: 'Avec Qui :', items: salarieItems, required: true }
 ]);
 
 const items = ref([
@@ -73,7 +70,30 @@ const fetchData = async () => {
     besoinItems.value = await getBesoins();
     const response = await axios.get(`${apiBaseUrl}/besoins`);
     items.value = response.data;
-    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getAffectation = async () => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/affectations`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const snackbar = ref(false);
+const snackbarMessage = ref('');
+
+const handleSaveClick = async () => {
+  try {
+    const affectationData = await getAffectation();
+    snackbarMessage.value = JSON.stringify(affectationData);
+    snackbar.value = true;
   } catch (error) {
     console.error(error);
   }
@@ -96,7 +116,10 @@ fetchData();
       </v-icon>
     </template>
   </HeaderComponent>
-  <BarFormComponent :fields="fields" :save="save" />
+  <BarFormComponent :fields="fields" :save="save" @click="handleSaveClick" />
+  <v-snackbar v-model="snackbar" timeout="6000">
+    {{ snackbarMessage }}
+  </v-snackbar>
   <SelectedComponent :items="items">
   </SelectedComponent>
   <div class="main">
