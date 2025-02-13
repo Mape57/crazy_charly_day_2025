@@ -25,3 +25,8 @@ logging:
     level:
         charlyday:
             ccd: "DEBUG"
+
+security:
+    jwt:
+        secret-key: cb5d4f92af1550dca925f3ec9e4622aa3dda7b6c3fe09e9c0c666fcebcebea9a
+        expiration-time: 3600000

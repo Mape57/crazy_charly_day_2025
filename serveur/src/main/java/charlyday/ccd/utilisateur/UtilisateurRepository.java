@@ -9,4 +9,5 @@ import java.util.UUID;
 @Repository
 public interface UtilisateurRepository extends ListCrudRepository<UtilisateurEntity, UUID> {
     List<UtilisateurEntity> findByRole(int role);
+    UtilisateurEntity findByEmail(String email);
 }

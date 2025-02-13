@@ -20,4 +20,5 @@ public class UtilisateurService {
     public void deleteUtilisateur(UtilisateurEntity entity){utilisateurRepository.delete(entity);}
     public UtilisateurEntity getUtilisateurById(UUID id){return utilisateurRepository.findById(id).orElse(null);}
     public List<UtilisateurEntity> getAllByRole(int role){return utilisateurRepository.findByRole(role);}
+    public UtilisateurEntity getByEmail(String email){return utilisateurRepository.findByEmail(email);}
 }
