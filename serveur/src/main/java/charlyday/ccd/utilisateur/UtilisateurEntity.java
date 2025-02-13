@@ -1,15 +1,17 @@
 package charlyday.ccd.utilisateur;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import charlyday.ccd.competences.CompetenceEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -36,4 +38,13 @@ public class UtilisateurEntity implements Serializable {
 
     @Column(name = "role")
     private int role;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    @JoinTable(
+            name = "salarie_competences",
+            joinColumns = @JoinColumn(name = "salarie_id",  referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "competence_id", referencedColumnName = "id")
+    )
+    private List<CompetenceEntity> competences = new ArrayList<>();
 }

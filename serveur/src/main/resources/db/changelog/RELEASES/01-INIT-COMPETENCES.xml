@@ -20,5 +20,12 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <insert tableName="competences">
+            <column name="id" value="611b06da-0925-45e9-aab2-b2dcf58eb17c"/>
+            <column name="libelle" value="test"/>
+            <column name="valide" value="true"/>
+            <column name="categorie" value="test jsp zebi"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>
