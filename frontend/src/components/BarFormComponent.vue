@@ -2,7 +2,9 @@
 defineProps({
   fields: Array,
   save: String,
-})
+});
+
+defineEmits(['saveBesoins']);
 </script>
 
 <template>
