@@ -65,9 +65,9 @@ public class Main {
 
 	private static Planification getPlanification() {
 		List<Utilisateur> clients = List.of(
-				new Utilisateur(UUID.randomUUID(), "Antoine_C", "email", "motdepasse", 2),
-				new Utilisateur(UUID.randomUUID(), "Brigitte_C", "email", "motdepasse", 2),
-				new Utilisateur(UUID.randomUUID(), "Cedric_C", "email", "motdepasse", 2)
+				new Utilisateur(UUID.randomUUID(), "Antoine_C"),
+				new Utilisateur(UUID.randomUUID(), "Brigitte_C"),
+				new Utilisateur(UUID.randomUUID(), "Cedric_C")
 		);
 		List<Competence> competences = List.of(
 				new Competence(UUID.randomUUID(), "BR"),
@@ -77,16 +77,16 @@ public class Main {
 				new Competence(UUID.randomUUID(), "IF")
 		);
 		List<Utilisateur> salaries = List.of(
-				new Utilisateur(UUID.randomUUID(), "Alice", "email", "motdepasse", 1, List.of(
+				new Utilisateur(UUID.randomUUID(), "Alice", List.of(
 						new SalarieCompetence(UUID.randomUUID(), competences.get(0), 4),
 						new SalarieCompetence(UUID.randomUUID(), competences.get(1), 7),
 						new SalarieCompetence(UUID.randomUUID(), competences.get(2), 1)
 				)),
-				new Utilisateur(UUID.randomUUID(), "Bernard", "email", "motdepasse", 1, List.of(
+				new Utilisateur(UUID.randomUUID(), "Bernard", List.of(
 						new SalarieCompetence(UUID.randomUUID(), competences.get(0), 5),
 						new SalarieCompetence(UUID.randomUUID(), competences.get(2), 7)
 				)),
-				new Utilisateur(UUID.randomUUID(), "Charlotte", "email", "motdepasse", 1, List.of(
+				new Utilisateur(UUID.randomUUID(), "Charlotte", List.of(
 						new SalarieCompetence(UUID.randomUUID(), competences.get(3), 8),
 						new SalarieCompetence(UUID.randomUUID(), competences.get(4), 5),
 						new SalarieCompetence(UUID.randomUUID(), competences.get(2), 4)

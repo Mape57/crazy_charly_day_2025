@@ -42,7 +42,7 @@ public class DataReader {
 			}
 
 			List<Utilisateur> clients = csv_besoins.keySet().stream()
-					.map(client -> new Utilisateur(UUID.randomUUID(), client, "email", "motdepasse", 2))
+					.map(client -> new Utilisateur(UUID.randomUUID(), client))
 					.toList();
 			List<String> competences_string = csv_competences.values().stream()
 					.flatMap(List::stream)
@@ -66,7 +66,7 @@ public class DataReader {
 							.orElseThrow();
 					salarieCompetences.add(new SalarieCompetence(UUID.randomUUID(), competence, pair.b));
 				}
-				salaries.add(new Utilisateur(UUID.randomUUID(), entry.getKey(), "email", "motdepasse", 1, salarieCompetences));
+				salaries.add(new Utilisateur(UUID.randomUUID(), entry.getKey(), salarieCompetences));
 			}
 
 			LocalDateTime date = LocalDateTime.of(2025, 2, 13, 8, 0);

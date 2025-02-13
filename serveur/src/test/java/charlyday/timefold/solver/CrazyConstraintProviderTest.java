@@ -25,7 +25,7 @@ class CrazyConstraintProviderTest {
 		void OK_jour_different() {
 			LocalDateTime date1 = LocalDateTime.of(2021, 1, 1, 8, 0);
 			LocalDateTime date2 = LocalDateTime.of(2021, 2, 1, 8, 0);
-			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1", "email", "motdepasse", 1, null);
+			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1", null);
 			Besoin besoin1 = new Besoin(UUID.randomUUID(), null, "besoin 1", null, date1, 60, salarie);
 			Besoin besoin2 = new Besoin(UUID.randomUUID(), null, "besoin 2", null, date2, 60, salarie);
 
@@ -38,7 +38,7 @@ class CrazyConstraintProviderTest {
 		void OK_heure_differente() {
 			LocalDateTime date1 = LocalDateTime.of(2021, 1, 1, 8, 0);
 			LocalDateTime date2 = LocalDateTime.of(2021, 1, 1, 9, 0);
-			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1", "email", "motdepasse", 1, null);
+			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1", null);
 			Besoin besoin1 = new Besoin(UUID.randomUUID(), null, "besoin 1", null, date1, 60, salarie);
 			Besoin besoin2 = new Besoin(UUID.randomUUID(), null, "besoin 2", null, date2, 60, salarie);
 
@@ -50,7 +50,7 @@ class CrazyConstraintProviderTest {
 		@Test
 		void KO_meme_heure() {
 			LocalDateTime date = LocalDateTime.of(2021, 1, 1, 8, 0);
-			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1", "email", "motdepasse", 1, null);
+			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1", null);
 			Besoin besoin1 = new Besoin(UUID.randomUUID(), null, "besoin 1", null, date, 60, salarie);
 			Besoin besoin2 = new Besoin(UUID.randomUUID(), null, "besoin 2", null, date, 60, salarie);
 
@@ -63,7 +63,7 @@ class CrazyConstraintProviderTest {
 		void KO_chevauchement_heure() {
 			LocalDateTime date1 = LocalDateTime.of(2021, 1, 1, 8, 0);
 			LocalDateTime date2 = LocalDateTime.of(2021, 1, 1, 8, 30);
-			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1", "email", "motdepasse", 1, null);
+			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1", null);
 			Besoin besoin1 = new Besoin(UUID.randomUUID(), null, "besoin 1", null, date1, 60, salarie);
 			Besoin besoin2 = new Besoin(UUID.randomUUID(), null, "besoin 2", null, date2, 60, salarie);
 
@@ -83,7 +83,7 @@ class CrazyConstraintProviderTest {
 				new Competence(UUID.randomUUID(), "IF")
 		);
 
-		private final Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "Alice", "email", "motdepasse", 1, List.of(
+		private final Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "Alice", List.of(
 				new SalarieCompetence(UUID.randomUUID(), competences.get(0), 4),
 				new SalarieCompetence(UUID.randomUUID(), competences.get(1), 7),
 				new SalarieCompetence(UUID.randomUUID(), competences.get(2), 1)
@@ -115,23 +115,23 @@ class CrazyConstraintProviderTest {
 		@Test
 		void KO_sujet() {
 			List<Utilisateur> clients = List.of(
-					new Utilisateur(UUID.randomUUID(), "Hugues", "email", "motdepasse", 2),
-					new Utilisateur(UUID.randomUUID(), "Iris", "email", "motdepasse", 2),
-					new Utilisateur(UUID.randomUUID(), "Jacques", "email", "motdepasse", 2)
+					new Utilisateur(UUID.randomUUID(), "Hugues"),
+					new Utilisateur(UUID.randomUUID(), "Iris"),
+					new Utilisateur(UUID.randomUUID(), "Jacques")
 			);
 			List<Competence> competences = List.of(
 					new Competence(UUID.randomUUID(), "jardinage"),
 					new Competence(UUID.randomUUID(), "bricolage")
 			);
 			List<Utilisateur> salaries = List.of(
-					new Utilisateur(UUID.randomUUID(), "Delphine", "email", "motdepasse", 1, List.of(
+					new Utilisateur(UUID.randomUUID(), "Delphine", List.of(
 							new SalarieCompetence(UUID.randomUUID(), competences.get(0), 8),
 							new SalarieCompetence(UUID.randomUUID(), competences.get(1), 4)
 					)),
-					new Utilisateur(UUID.randomUUID(), "Bertrand", "email", "motdepasse", 1, List.of(
+					new Utilisateur(UUID.randomUUID(), "Bertrand", List.of(
 							new SalarieCompetence(UUID.randomUUID(), competences.get(1), 7)
 					)),
-					new Utilisateur(UUID.randomUUID(), "Francis", "email", "motdepasse", 1, List.of(
+					new Utilisateur(UUID.randomUUID(), "Francis", List.of(
 							new SalarieCompetence(UUID.randomUUID(), competences.get(0), 6),
 							new SalarieCompetence(UUID.randomUUID(), competences.get(1), 5)
 					))
@@ -155,8 +155,8 @@ class CrazyConstraintProviderTest {
 		void OK_satisfait() {
 			LocalDateTime date1 = LocalDateTime.of(2021, 1, 1, 8, 0);
 			LocalDateTime date2 = LocalDateTime.of(2021, 1, 1, 8, 30);
-			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1", "email", "motdepasse", 1);
-			Utilisateur client = new Utilisateur(UUID.randomUUID(), "client 1", "email", "motdepasse", 2);
+			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1");
+			Utilisateur client = new Utilisateur(UUID.randomUUID(), "client 1");
 			Besoin besoin1 = new Besoin(UUID.randomUUID(), client, "besoin 1", null, date1, 60, salarie);
 			Besoin besoin2 = new Besoin(UUID.randomUUID(), client, "besoin 2", null, date2, 60);
 
@@ -169,9 +169,9 @@ class CrazyConstraintProviderTest {
 		void KO_insatisfait() {
 			LocalDateTime date1 = LocalDateTime.of(2021, 1, 1, 8, 0);
 			LocalDateTime date2 = LocalDateTime.of(2021, 1, 1, 8, 30);
-			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1", "email", "motdepasse", 1);
-			Utilisateur client = new Utilisateur(UUID.randomUUID(), "client 1", "email", "motdepasse", 2);
-			Utilisateur client2 = new Utilisateur(UUID.randomUUID(), "client 2", "email", "motdepasse", 2);
+			Utilisateur salarie = new Utilisateur(UUID.randomUUID(), "salarie 1");
+			Utilisateur client = new Utilisateur(UUID.randomUUID(), "client 1");
+			Utilisateur client2 = new Utilisateur(UUID.randomUUID(), "client 2");
 			Besoin besoin1 = new Besoin(UUID.randomUUID(), client, "besoin 1", null, date1, 60, salarie);
 			Besoin besoin2 = new Besoin(UUID.randomUUID(), client2, "besoin 2", null, date2, 60);
 

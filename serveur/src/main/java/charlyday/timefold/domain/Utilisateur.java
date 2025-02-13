@@ -13,22 +13,16 @@ import java.util.UUID;
 public class Utilisateur {
 	private UUID id;
 	private String nom;
-	private String email;
-	private String motDePasse;
-	private int role;
 	private List<SalarieCompetence> competences;
 
-	public Utilisateur(UUID id, String nom, String email, String motDePasse, int role) {
+	public Utilisateur(UUID id, String nom) {
 		this.id = id;
 		this.nom = nom;
-		this.email = email;
-		this.motDePasse = motDePasse;
-		this.role = role;
 		this.competences = null;
 	}
 
 	@Override
 	public String toString() {
-		return nom;
+		return this.nom;
 	}
 }
