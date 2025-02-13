@@ -1,8 +1,6 @@
 package charlyday.ccd.utilisateur;
 
-import charlyday.ccd.SalarieCompetence.SalarieCompetenceEntity;
-import charlyday.ccd.SalarieCompetence.SalarieCompetenceKey;
-import charlyday.ccd.SalarieCompetence.SalarieCompetenceService;
+import charlyday.ccd.SalarieCompetence.*;
 import charlyday.ccd.competences.CompetenceDto;
 import charlyday.ccd.competences.CompetenceEntity;
 import charlyday.ccd.competences.CompetenceMapper;
@@ -227,5 +225,49 @@ public class SalarieController {
         salarieCompetenceKey.setSalarieId(entity.getId());
         salarieCompetenceEntity.setSalarieCompetenceKey(salarieCompetenceKey);
         salarieCompetenceService.deleteSalarieCompetence(salarieCompetenceEntity);
+    }
+
+    @CrossOrigin
+    @Operation(summary = "Update competence for salarie",description = "Update competence for salarie")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated"),
+            @ApiResponse(responseCode = "404", description = "Internal server error - Competence was not update")
+    })
+    @PatchMapping("/{idSalarie}/competence/{idCompetence}")
+    public SalarieCompetenceEntity updateCompetenceForSalaries(@PathVariable UUID idSalarie, @PathVariable UUID idCompetence,@RequestBody CreerInteret creerInteret){
+        List<SalarieCompetenceDto> dtos = SalarieCompetenceMapper.INSTANCE.maptToListDTO(salarieCompetenceService.getCompetenceForSalarie(idSalarie));
+        SalarieCompetenceDto dto = null;
+
+        if (dtos == null){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Competence not found"
+            );
+        }
+
+        for (SalarieCompetenceDto salarieCompetenceDto : dtos){
+            if (salarieCompetenceDto.getCompetenceId() == idCompetence)
+                dto = salarieCompetenceDto;
+        }
+        if (dto == null){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Disponibility not found"
+            );
+        }
+
+        UtilisateurEntity entity = utilisateurService.getUtilisateurById(idSalarie);
+
+        if (entity.getRole() != 1) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Utilisateur is not salarie"
+            );
+        }
+
+        SalarieCompetenceEntity salarieCompetenceEntity = new SalarieCompetenceEntity();
+        SalarieCompetenceKey salarieCompetenceKey = new SalarieCompetenceKey();
+        salarieCompetenceKey.setSalarieId(idSalarie);
+        salarieCompetenceKey.setCompetenceId(idCompetence);
+        salarieCompetenceEntity.setInteret(creerInteret.getInteret());
+
+        return salarieCompetenceService.updateSalarieCompetence(salarieCompetenceEntity);
     }
 }
