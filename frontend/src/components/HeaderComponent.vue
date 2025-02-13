@@ -1,6 +1,8 @@
 <template>
   <header>
-    <h1>{{ logo }}</h1>
+    <router-link to="/">
+      <h1>{{ logo }}</h1>
+    </router-link>
     <router-link :to="profileRoute">
       <div class="icon-container">
         <slot name="icons"></slot>
@@ -48,6 +50,11 @@ header {
 header h1 {
   margin-left: 1em;
   font-weight: 200;
+  color: black;
+}
+
+a {
+  text-decoration: none;
 }
 
 .icon-container {
