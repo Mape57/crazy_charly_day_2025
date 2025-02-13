@@ -29,7 +29,7 @@
         </insert>
 
         <insert tableName="competences">
-            <column name="id" value="674d16e7-e6d3-49fb-9485-740d7fb59fa2 "/>
+            <column name="id" value="674d16e7-e6d3-49fb-9485-740d7fb59fa2"/>
             <column name="libelle" value="IF"/>
             <column name="valide" value="true"/>
             <column name="categorie" value="manipulation d’outil informatique

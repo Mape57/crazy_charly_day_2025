@@ -1,10 +1,13 @@
 package charlyday.ccd.utilisateur;
 
-import charlyday.ccd.SalarieCompetence.*;
-import charlyday.ccd.competences.CompetenceDto;
-import charlyday.ccd.competences.CompetenceEntity;
-import charlyday.ccd.competences.CompetenceMapper;
-import charlyday.ccd.competences.CompetenceService;
+import charlyday.ccd.besoinUtilisateur.BesoinUtilisateurEntity;
+import charlyday.ccd.besoinUtilisateur.BesoinUtilisateurService;
+import charlyday.ccd.besoins.BesoinsDto;
+import charlyday.ccd.besoins.BesoinsEntity;
+import charlyday.ccd.besoins.BesoinsMapper;
+import charlyday.ccd.besoins.BesoinsService;
+import charlyday.ccd.competences.*;
+import charlyday.ccd.salarieCompetence.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -13,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,8 +26,10 @@ public class SalarieController {
     private final UtilisateurService utilisateurService;
     private final CompetenceService competenceService;
     private final SalarieCompetenceService salarieCompetenceService;
+    private final BesoinUtilisateurService besoinUtilisateurService;
+    private final BesoinsService besoinsService;
     @Autowired
-    public SalarieController(UtilisateurService utilisateurService,CompetenceService competenceService,SalarieCompetenceService salarieCompetenceService){this.utilisateurService = utilisateurService;this.competenceService = competenceService;this.salarieCompetenceService = salarieCompetenceService;}
+    public SalarieController(UtilisateurService utilisateurService,CompetenceService competenceService,SalarieCompetenceService salarieCompetenceService,BesoinUtilisateurService besoinUtilisateurService,BesoinsService besoinsService){this.utilisateurService = utilisateurService;this.competenceService = competenceService;this.salarieCompetenceService = salarieCompetenceService;this.besoinUtilisateurService = besoinUtilisateurService;this.besoinsService = besoinsService;}
 
     @CrossOrigin
     @Operation(summary = "Get all utilisateurs",description = "Returns all utilisateurs")
@@ -132,7 +138,7 @@ public class SalarieController {
             @ApiResponse(responseCode = "500", description = "Internal server error - Utilisateur was not found")
     })
     @GetMapping("/{id}/competences")
-    public List<CompetenceDto> getCompetenceForSalarie(@PathVariable UUID id){
+    public List<CompetenceInteret> getCompetenceForSalarie(@PathVariable UUID id){
         UtilisateurEntity entity = utilisateurService.getUtilisateurById(id);
         List<CompetenceDto> list = CompetenceMapper.INSTANCE.mapToListDTO(utilisateurService.getUtilisateurById(id).getCompetences());
         if (list == null){
@@ -148,7 +154,18 @@ public class SalarieController {
                     HttpStatus.NOT_FOUND, "No one competences for this salarie"
             );
         }else{
-            return list;
+            List<CompetenceInteret> result = new ArrayList<>();
+            for (CompetenceDto dto : list){
+                CompetenceInteret interet = new CompetenceInteret();
+                SalarieCompetenceEntity salarieCompetenceEntity = salarieCompetenceService.getCompetenceSalarie(id,dto.getId());
+                interet.setInteret(salarieCompetenceEntity.getInteret());
+                interet.setId(dto.getId());
+                interet.setCategorie(dto.getCategorie());
+                interet.setLibelle(dto.getLibelle());
+                interet.setValide(dto.isValide());
+                result.add(interet);
+            }
+            return result;
         }
     }
 
@@ -269,5 +286,33 @@ public class SalarieController {
         salarieCompetenceEntity.setInteret(creerInteret.getInteret());
 
         return salarieCompetenceService.updateSalarieCompetence(salarieCompetenceEntity);
+    }
+
+    @CrossOrigin
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated"),
+            @ApiResponse(responseCode = "404", description = "Internal server error - Besoins was not update")
+    })
+    @GetMapping("/{id}/besoins")
+    public List<BesoinsDto> getBesoinsForSalarie(@PathVariable UUID id){
+        UtilisateurEntity entity = utilisateurService.getUtilisateurById(id);
+        if (entity == null){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Utilisateur not found"
+            );
+        }else if(entity.getRole() != 1){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Utilisateur is not salarie"
+            );
+        }
+
+        List<BesoinUtilisateurEntity> besoinUtilisateurEntities = besoinUtilisateurService.getBesoinForSalarie(id);
+        List<BesoinsEntity> besoinsEntities = new ArrayList<>();
+        for (BesoinUtilisateurEntity entities : besoinUtilisateurEntities){
+            BesoinsEntity besoins = besoinsService.getBesoinsById(entities.getBesoinUtilisateurKey().getBesoinId());
+            besoinsEntities.add(besoins);
+        }
+
+        return BesoinsMapper.INSTANCE.mapToListDTO(besoinsEntities);
     }
 }

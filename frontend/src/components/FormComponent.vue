@@ -1,7 +1,9 @@
 <script setup>
-import { ref } from 'vue';
-import { defineProps, defineEmits } from 'vue';
+import {ref} from 'vue';
+import {defineProps, defineEmits} from 'vue';
 import axios from 'axios';
+
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const props = defineProps({
   title: {
@@ -27,7 +29,7 @@ const formData = ref({});
 
 const handleSubmit = async () => {
   try {
-    const response = await axios.post(props.submitUrl, formData.value);
+    const response = await axios.post(`${apiBaseUrl}/submitUrl`, formData.value);
     emit('submitSuccess', response.data);
   } catch (error) {
     emit('submitError', error);
@@ -41,7 +43,8 @@ const handleSubmit = async () => {
     <div class="input-container" v-for="field in fields" :key="field.name">
       <label :for="field.name">{{ field.label }}</label>
       <template v-if="field.type === 'rating'">
-        <v-rating v-model="formData[field.name]" :name="field.name" hover half-increments :length="5" :size="32" active-color="#45FF30"></v-rating>
+        <v-rating v-model="formData[field.name]" :name="field.name" hover half-increments :length="5" :size="32"
+                  active-color="#45FF30"></v-rating>
       </template>
       <template v-else-if="field.options">
         <select v-model="formData[field.name]" :name="field.name">

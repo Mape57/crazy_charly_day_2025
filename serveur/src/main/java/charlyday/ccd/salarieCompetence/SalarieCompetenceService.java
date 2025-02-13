@@ -1,4 +1,4 @@
-package charlyday.ccd.SalarieCompetence;
+package charlyday.ccd.salarieCompetence;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,4 +17,5 @@ public class SalarieCompetenceService {
     public SalarieCompetenceEntity updateSalarieCompetence(SalarieCompetenceEntity salarieCompetenceEntity){return salarieCompetenceRepository.save(salarieCompetenceEntity);}
     public void deleteSalarieCompetence(SalarieCompetenceEntity salarieCompetenceEntity){salarieCompetenceRepository.delete(salarieCompetenceEntity);}
     public List<SalarieCompetenceEntity> getCompetenceForSalarie(UUID id){return salarieCompetenceRepository.findBySalarieCompetenceKeySalarieId(id);}
+    public SalarieCompetenceEntity getCompetenceSalarie(UUID idSalarie,UUID idCompetence){return salarieCompetenceRepository.findBySalarieCompetenceKeySalarieIdAndSalarieCompetenceKeyCompetenceId(idSalarie, idCompetence);}
 }

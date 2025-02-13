@@ -1,4 +1,4 @@
-package charlyday.ccd.SalarieCompetence;
+package charlyday.ccd.salarieCompetence;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.UUID;
 
+//d
 @RestController
 @RequestMapping("salarieCompetence")
 @Transactional

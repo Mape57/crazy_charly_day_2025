@@ -1,4 +1,4 @@
-package charlyday.ccd.SalarieCompetence;
+package charlyday.ccd.salarieCompetence;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +9,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class SalarieCompetenceDto {
 
-    UUID salarieId;
+    private UUID salarieId;
 
-    UUID competenceId;
+    private UUID competenceId;
 
-    int interet;
+    private int interet;
 }
