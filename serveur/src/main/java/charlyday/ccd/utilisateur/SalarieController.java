@@ -6,11 +6,8 @@ import charlyday.ccd.besoins.BesoinsDto;
 import charlyday.ccd.besoins.BesoinsEntity;
 import charlyday.ccd.besoins.BesoinsMapper;
 import charlyday.ccd.besoins.BesoinsService;
+import charlyday.ccd.competences.*;
 import charlyday.ccd.salarieCompetence.*;
-import charlyday.ccd.competences.CompetenceDto;
-import charlyday.ccd.competences.CompetenceEntity;
-import charlyday.ccd.competences.CompetenceMapper;
-import charlyday.ccd.competences.CompetenceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -141,7 +138,7 @@ public class SalarieController {
             @ApiResponse(responseCode = "500", description = "Internal server error - Utilisateur was not found")
     })
     @GetMapping("/{id}/competences")
-    public List<CompetenceDto> getCompetenceForSalarie(@PathVariable UUID id){
+    public List<CompetenceInteret> getCompetenceForSalarie(@PathVariable UUID id){
         UtilisateurEntity entity = utilisateurService.getUtilisateurById(id);
         List<CompetenceDto> list = CompetenceMapper.INSTANCE.mapToListDTO(utilisateurService.getUtilisateurById(id).getCompetences());
         if (list == null){
@@ -157,7 +154,18 @@ public class SalarieController {
                     HttpStatus.NOT_FOUND, "No one competences for this salarie"
             );
         }else{
-            return list;
+            List<CompetenceInteret> result = new ArrayList<>();
+            for (CompetenceDto dto : list){
+                CompetenceInteret interet = new CompetenceInteret();
+                SalarieCompetenceEntity salarieCompetenceEntity = salarieCompetenceService.getCompetenceSalarie(id,dto.getId());
+                interet.setInteret(salarieCompetenceEntity.getInteret());
+                interet.setId(dto.getId());
+                interet.setCategorie(dto.getCategorie());
+                interet.setLibelle(dto.getLibelle());
+                interet.setValide(dto.isValide());
+                result.add(interet);
+            }
+            return result;
         }
     }
 
