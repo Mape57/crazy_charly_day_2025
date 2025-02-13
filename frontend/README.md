@@ -27,4 +27,3 @@ npm run dev
 ```sh
 npm run build
 ```
-192.168.225.248
