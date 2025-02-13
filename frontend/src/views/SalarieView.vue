@@ -5,7 +5,6 @@ import axios from "axios";
 import FormComponent from "@/components/FormComponent.vue";
 import CarouselComponent from "@/components/CarouselComponent.vue";
 
-
 const userStore = useUserStore();
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -34,7 +33,17 @@ async function getCompetencesBySalarieId(id) {
       },
     }).then((res) => {
       user.value.userCompetences = res.data;
+      console.log(user.value.userCompetences);
     });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function getCompetenceById(id) {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/competences/${id}`);
+    return response.data;
   } catch (error) {
     console.error(error);
   }
@@ -46,11 +55,35 @@ async function getMissionsBySalarieId(id) {
       headers: {
         Authorization: `Bearer ${userStore.token}`,
       },
-    }).then((res) => {
-      console.log(res);
-      user.value.userMissions = res.data.map(mission => ({
-        ...mission,
-        source: categoryImageMap[mission.categorie] || categoryImageMap.default
+    }).then(async (res) => {
+      user.value.userMissions = await Promise.all(res.data.map(async (mission) => {
+        const competence = await getCompetenceById(mission.competenceId);
+        switch (competence.libelle) {
+          case 'AD':
+            mission.source = categoryImageMap.administration;
+            break;
+          case 'BR':
+            mission.source = categoryImageMap.bricolage;
+            break;
+          case 'IF':
+            mission.source = categoryImageMap.informatique;
+            break;
+          case 'JD':
+            mission.source = categoryImageMap.jardinage;
+            break;
+          case 'MN':
+            mission.source = categoryImageMap.menage;
+            break;
+          default:
+            mission.source = categoryImageMap.default;
+        }
+        return {
+          title: competence.categorie,
+          subtitle: mission.description,
+          source: mission.source,
+          max: '300',
+          link: '/mission',
+        };
       }));
     });
   } catch (error) {
@@ -76,7 +109,6 @@ onMounted(async () => {
   await getCompetencesBySalarieId(userStore.id);
 });
 </script>
-
 <template>
   <main>
     <div class="left-side">
@@ -88,14 +120,14 @@ onMounted(async () => {
           <p class="competence-title">Compétences:</p>
           <ul class="list-competences">
             <li v-for="competence in user.userCompetences" :key="competence.id" class="competence-item">
-              <span>{{ competence.libelle }}</span>
-              <v-rating :model-value="competence.rating" :length="5" half-increments :size="20" readonly
+              <span>{{ competence.categorie }}</span>
+              <v-rating :model-value="competence.interet / 2" :length="5" half-increments :size="20" readonly
                         active-color="#45FF30"></v-rating>
             </li>
           </ul>
         </div>
         <FormComponent title="Nouvelle compétence ?" button-text="Demander ma compétence" :fields="[
-          { label: 'Quoi?', type: 'text', name: 'nom', placeholder: 'Quoi de neuf', options: user.competences.map(c => c.libelle)  },
+          { label: 'Quoi?', type: 'text', name: 'nom', placeholder: 'Quoi de neuf', options: user.competences.map(c => c.categorie)  },
           { label: 'Vraiment?', type: 'rating', name: 'rating' },
         ]" :submit-url="`salaries/${userStore.id}/competences`"
         />

@@ -29,7 +29,7 @@ const formData = ref({});
 
 const handleSubmit = async () => {
   try {
-    const response = await axios.post(`${apiBaseUrl}/submitUrl`, formData.value);
+    const response = await axios.post(`${apiBaseUrl}/${props.submitUrl}`, formData.value);
     emit('submitSuccess', response.data);
   } catch (error) {
     emit('submitError', error);
