@@ -16,22 +16,24 @@ services:
       - frontend_backend_network
 
   backend:
-    build: .
+    build: ./serveur
     volumes:
-      - /backend:/app
+      - ./server:/app
     ports:
       - "8080:8080"
     depends_on:
       - db
+    env_file:
+      - .env
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
 
   db:
     image: "postgres:16"
     ports:
-      - "127.0.0.1:${CCD_LOCAL_DB_PORT}:5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
