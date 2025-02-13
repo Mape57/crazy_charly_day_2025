@@ -1,4 +1,4 @@
-package charlyday.ccd.SalarieCompetence;
+package charlyday.ccd.salarieCompetence;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -25,9 +25,6 @@ public class BesoinsDto {
 	@Schema(name = "dateService", example = "2025-01-01")
 	private Date dateService;
 
-	@Schema(name = "salarieId", example = "4")
-	private UUID salarieId;
-
 	@Schema(name = "duree", example = "5")
 	private int duree;
 }

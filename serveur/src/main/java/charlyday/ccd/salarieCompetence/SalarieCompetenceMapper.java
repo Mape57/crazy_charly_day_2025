@@ -1,4 +1,4 @@
-package charlyday.ccd.SalarieCompetence;
+package charlyday.ccd.salarieCompetence;
 
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
