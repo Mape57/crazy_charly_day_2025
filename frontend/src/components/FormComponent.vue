@@ -1,4 +1,7 @@
 <script setup>
+import { ref } from 'vue';
+import { defineProps, defineEmits } from 'vue';
+import axios from 'axios';
 
 const props = defineProps({
   title: {
@@ -13,15 +16,23 @@ const props = defineProps({
     type: String,
     required: true
   },
+  submitUrl: {
+    type: String,
+    required: true
+  }
 });
+
+const emit = defineEmits(['submitSuccess', 'submitError']);
+const formData = ref({});
 
 const handleSubmit = async () => {
   try {
-
+    const response = await axios.post(props.submitUrl, formData.value);
+    emit('submitSuccess', response.data);
   } catch (error) {
-    console.error(error);
+    emit('submitError', error);
   }
-}
+};
 </script>
 
 <template>
@@ -30,15 +41,15 @@ const handleSubmit = async () => {
     <div class="input-container" v-for="field in fields" :key="field.name">
       <label :for="field.name">{{ field.label }}</label>
       <template v-if="field.type === 'rating'">
-        <v-rating :name="field.name" hover half-increments :length="5" :size="32" active-color="#45FF30"></v-rating>
+        <v-rating v-model="formData[field.name]" :name="field.name" hover half-increments :length="5" :size="32" active-color="#45FF30"></v-rating>
       </template>
       <template v-else-if="field.options">
-        <select :name="field.name">
+        <select v-model="formData[field.name]" :name="field.name">
           <option v-for="option in field.options" :key="option" :value="option">{{ option }}</option>
         </select>
       </template>
       <template v-else>
-        <input :type="field.type" :name="field.name" :placeholder="field.placeholder">
+        <input v-model="formData[field.name]" :type="field.type" :name="field.name" :placeholder="field.placeholder">
       </template>
       <span class="divider"></span>
     </div>
@@ -53,6 +64,7 @@ const handleSubmit = async () => {
   border: 1px solid #868686;
   border-radius: 16px;
   padding: 40px;
+  box-shadow: 0 4px 4px #868686;
 }
 
 h2 {
@@ -66,6 +78,13 @@ h2 {
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
+}
+
+.input-container select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #868686;
+  font-size: 16px;
 }
 
 .input-container label {
@@ -102,5 +121,8 @@ button {
   font-weight: bold;
 }
 
-button:hover {}
+button:hover {
+  background-color: #45FF30;
+}
+
 </style>

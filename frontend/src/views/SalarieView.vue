@@ -8,29 +8,31 @@ import CarouselComponent from "@/components/CarouselComponent.vue";
 
 const userStore = useUserStore();
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const user = ref({
   name: '',
   userMissions: [
     {
-      id: 1,
-      name: 'Bricolage',
-      libelle: 'Lorem ipsum dolor sit amet consectetur. Elementum convallis a malesuada tincidunt. Nunc ac aliquam quis quam dui velit. Donec sollicitudin cursus tristique hac sagittis eu vitae. Malesuada nisi dui ut arcu faucibus tristique platea gravida.'
+      title: 'Mission 1',
+      subtitle: 'Description 1',
+      source: '/src/assets/img/bricolage.png',
     },
     {
-      id: 2,
-      name: 'Cuisine',
-      libelle: 'Lorem ipsum dolor sit amet consectetur. Elementum convallis a malesuada tincidunt. Nunc ac aliquam quis quam dui velit. Donec sollicitudin cursus tristique hac sagittis eu vitae. Malesuada nisi dui ut arcu faucibus tristique platea gravida.'
+      title: 'Mission 2',
+      subtitle: 'Description 1',
+      source: '/src/assets/img/jardinage.png',
     },
     {
-      id: 3,
-      name: 'Jardinage',
-      libelle: 'Lorem ipsum dolor sit amet consectetur. Elementum convallis a malesuada tincidunt. Nunc ac aliquam quis quam dui velit. Donec sollicitudin cursus tristique hac sagittis eu vitae. Malesuada nisi dui ut arcu faucibus tristique platea gravida.'
+      title: 'Mission 3',
+      subtitle: 'Description 1',
+      source: '/src/assets/img/menage.png',
     },
     {
-      id: 4,
-      name: 'Informatique',
-      libelle: 'Lorem ipsum dolor sit amet consectetur. Elementum convallis a malesuada tincidunt. Nunc ac aliquam quis quam dui velit. Donec sollicitudin cursus tristique hac sagittis eu vitae. Malesuada nisi dui ut arcu faucibus tristique platea gravida.'
-    },
+      title: 'Mission 4',
+      subtitle: 'Description 1',
+      source: '/src/assets/img/profile_picture.png',
+    }
   ],
   competences: [
     'Bricolage',
@@ -54,7 +56,7 @@ const user = ref({
 
 async function getCompetencesBySalarieId(id) {
   try {
-    const response = await axios.get(`http://localhost:8080/salaries/${id}/competences`, {
+    const response = await axios.get(`${apiBaseUrl}/salaries/${id}/competences`, {
       headers: {
         Authorization: `Bearer ${userStore.token}`,
       },
@@ -69,7 +71,7 @@ async function getCompetencesBySalarieId(id) {
 async function getMissionsBySalarieId(id) {
   try {
     // TODO: modifier l'url
-    const response = await axios.get(`http://localhost:8080/salaries/${id}/missions`, {
+    const response = await axios.get(`${apiBaseUrl}/salaries/${id}/missions`, {
       headers: {
         Authorization: `Bearer ${userStore.token}`,
       },
@@ -83,10 +85,10 @@ async function getMissionsBySalarieId(id) {
 
 async function getCompetences() {
   try {
-    const response = await axios.get('http://localhost:8080/competences')
-      .then((res) => {
-        user.value.competences = res.data;
-      });
+    const response = await axios.get('${apiBaseUrl}/competences')
+        .then((res) => {
+          user.value.competences = res.data;
+        });
   } catch (error) {
     console.error(error);
   }
@@ -94,15 +96,14 @@ async function getCompetences() {
 
 onMounted(async () => {
   user.value.name = userStore.name;
-  await getCompetences();
-  await getMissionsBySalarieId(userStore.id);
-  await getCompetencesBySalarieId(userStore.id);
+  // await getCompetences();
+  // await getMissionsBySalarieId(userStore.id);
+  // await getCompetencesBySalarieId(userStore.id);
 });
 </script>
 
 <template>
   <main>
-
     <div class="left-side">
       <router-link to="/">Crazy</router-link>
       <div id="left-side-content">
@@ -121,17 +122,17 @@ onMounted(async () => {
         <FormComponent title="Nouvelle compétence ?" button-text="Demander ma compétence" :fields="[
           { label: 'Quoi?', type: 'text', name: 'nom', placeholder: 'Quoi de neuf', options: user.competences },
           { label: 'Vraiment?', type: 'rating', name: 'rating' },
-        ]" />
+        ]" submit-url="{{apiBaseUrl}}/salaries/1/competences"
+        />
       </div>
     </div>
 
-
     <div class="right-side">
       <h2>Dernières missions:</h2>
-      <CarouselComponent :items="user.competences" />
+      <ul class="list">
+        <CarouselComponent :items="user.userMissions"/>
+      </ul>
     </div>
-
-
   </main>
 </template>
 
@@ -145,7 +146,7 @@ main {
 
 .left-side {
   width: 100%;
-  padding: 1.5rem 3.125rem; 
+  padding: 1.5rem 3.125rem;
   border-right: none;
   border-bottom: 1px solid #cecece;
   box-sizing: border-box;
@@ -215,7 +216,6 @@ a {
   font-weight: lighter;
 }
 
-
 @media (min-width: 768px) {
 
   .left-side,
@@ -244,8 +244,6 @@ a {
 
   .right-side {
     width: 70%;
-
   }
-
 }
 </style>
