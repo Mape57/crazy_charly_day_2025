@@ -1,9 +1,11 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import {RouterView} from 'vue-router'
+import CardComponent from "@/components/CardComponent.vue";
+import CarouselComponent from "@/components/CarouselComponent.vue";
 </script>
 
 <template>
-  <RouterView />
+  <RouterView/>
 </template>
 
 <style scoped>
