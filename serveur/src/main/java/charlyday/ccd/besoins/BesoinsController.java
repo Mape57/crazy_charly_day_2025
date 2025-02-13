@@ -4,9 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,7 +22,6 @@ public class BesoinsController {
 		this.besoinsService = besoinsService;
 	}
 
-	/*
 	@CrossOrigin
 	@Operation(summary = "Récupérer tous les besoins", description = "Retourne la liste complète des besoins")
 	@ApiResponses(value = {
@@ -41,43 +37,7 @@ public class BesoinsController {
 			);
 		}
 		return besoins;
-	}*/
-
-	/*
-	@CrossOrigin
-	@Operation(summary = "Récupérer les besoins avec pagination", description = "Retourne une liste paginée des besoins sans métadonnées")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Liste paginée récupérée avec succès"),
-			@ApiResponse(responseCode = "500", description = "Erreur serveur")
-	})
-	@GetMapping("/get/besoins")
-	public List<BesoinsDto> getBesoinsPaginated(
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int limit) {
-		Pageable pageable = PageRequest.of(page, limit);
-		return besoinsService.getAllBesoinsPaginated(pageable).map(BesoinsMapper.INSTANCE::mapToDTO).getContent();
 	}
-*/
-	@CrossOrigin
-	@Operation(summary = "Récupérer les besoins avec ou sans pagination",
-			description = "Retourne tous les besoins si aucun paramètre n'est fourni, sinon retourne une liste paginée")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Liste récupérée avec succès"),
-			@ApiResponse(responseCode = "500", description = "Erreur serveur")
-	})
-	@GetMapping
-	public List<BesoinsDto> getBesoins(
-			@RequestParam(required = false) Integer page,
-			@RequestParam(required = false) Integer limit) {
-
-		if (page == null || limit == null) {
-			return BesoinsMapper.INSTANCE.mapToListDTO(besoinsService.getAllBesoins());
-		}
-
-		Pageable pageable = PageRequest.of(page - 1, limit);
-		return besoinsService.getAllBesoinsPaginated(pageable).map(BesoinsMapper.INSTANCE::mapToDTO).getContent();
-	}
-
 
 	@CrossOrigin
 	@Operation(summary = "Créer un besoin", description = "Crée un nouveau besoin avec les informations fournies")
