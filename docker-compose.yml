@@ -16,29 +16,17 @@ services:
       - frontend_backend_network
 
   backend:
-    image: openjdk:17-jdk
-    working_dir: /app
+    build: .
     volumes:
-      - ./backend:/app
+      - /backend:/app
     ports:
       - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-      SPRING_RABBITMQ_HOST: rabbitmq
-      SPRING_RABBITMQ_PORT: 5672
-      SPRING_RABBITMQ_USERNAME: ${RABBITMQ_USER}
-      SPRING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
-    command: sh -c "mvn spring-boot:run"
     depends_on:
       - db
-      - rabbitmq
-    env_file:
-      - .env
-    networks:
-      - frontend_backend_network
-      - db_rabbitmq_network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
 
   db:
     image: "postgres:16"
