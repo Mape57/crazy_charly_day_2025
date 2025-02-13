@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: charlyday.ccd.CcdApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.550 s -- in charlyday.ccd.CcdApplicationTests

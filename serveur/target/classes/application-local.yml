@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: Charlyday
+  datasource:
+    url: jdbc:postgresql://localhost:54321/charlyday
+    username: postgres
+    password: pwd
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
+
+server:
+  port: 8080
+  error:
+    include-stacktrace: always
+
+logging:
+  level:
+    well_tennis_club: DEBUG
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+
+management:
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  paths-to-exclude: /error
+  default-produces-media-type: application/json
+  swagger-ui:
+    path: /openapi/swagger-ui.html
+  api-docs:
+    path: /openapi/v3/api-docs
+
+liquibase:
+  logging:
+    level: DEBUG
