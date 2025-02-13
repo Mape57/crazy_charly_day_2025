@@ -51,7 +51,7 @@ const handleSubmit = async () => {
   display: flex;
   flex-direction: column;
   border: 1px solid #868686;
-  border-radius: 40px;
+  border-radius: 16px;
   padding: 40px;
 }
 
@@ -102,6 +102,5 @@ button {
   font-weight: bold;
 }
 
-button:hover {
-}
+button:hover {}
 </style>

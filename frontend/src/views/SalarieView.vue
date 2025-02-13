@@ -128,9 +128,7 @@ onMounted(async () => {
 
     <div class="right-side">
       <h2>Dernières missions:</h2>
-      <ul class="list">
-        <CarouselComponent :items="user.competences" />
-      </ul>
+      <CarouselComponent :items="user.competences" />
     </div>
 
 
@@ -143,15 +141,13 @@ main {
   align-items: flex-start;
   flex-wrap: wrap;
   height: 100vh;
-  margin-top: 2em;
 }
 
 .left-side {
   width: 100%;
-  padding: 0 3.125rem;
-  margin: 2em 0;
+  padding: 1.5rem 3.125rem; 
   border-right: none;
-  border-bottom: 0.2rem solid #afafaf;
+  border-bottom: 1px solid #cecece;
   box-sizing: border-box;
 }
 
@@ -164,7 +160,6 @@ a {
   text-decoration: none;
   color: #000;
   font-size: 3em;
-  font-weight: bold;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -207,21 +202,30 @@ a {
 .right-side {
   width: 100%;
   padding-left: 3.125rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
 }
 
 .right-side h2 {
-  text-decoration: underline;
+  border-bottom: #000 0.2rem solid;
+  width: fit-content;
+  font-size: 2.5rem;
+  font-weight: lighter;
 }
+
 
 @media (min-width: 768px) {
 
   .left-side,
   .right-side {
     width: 50%;
+    height: 100%;
   }
 
   .left-side {
-    border-right: 0.2rem solid #afafaf;
+    border-right: 1px solid #cecece;
     border-bottom: none;
   }
 
@@ -229,11 +233,6 @@ a {
 
 @media (min-width: 1024px) {
 
-  header {
-    width: 30%;
-    height: 5rem;
-    padding: 0 1.25rem;
-  }
 
   main {
     flex-wrap: nowrap;
@@ -241,12 +240,11 @@ a {
 
   .left-side {
     width: 30%;
-    padding: 0 3.125rem;
   }
 
   .right-side {
     width: 70%;
-    padding-left: 3.125rem;
+
   }
 
 }
