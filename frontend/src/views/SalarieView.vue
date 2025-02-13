@@ -1,9 +1,8 @@
 <script setup>
-import {useUserStore} from "@/stores/userStore.js";
-import {onMounted, ref} from "vue";
+import { useUserStore } from "@/stores/userStore.js";
+import { onMounted, ref } from "vue";
 import axios from "axios";
 import FormComponent from "@/components/FormComponent.vue";
-import CardComponent from "@/components/CardComponent.vue";
 import CarouselComponent from "@/components/CarouselComponent.vue";
 
 
@@ -85,9 +84,9 @@ async function getMissionsBySalarieId(id) {
 async function getCompetences() {
   try {
     const response = await axios.get('http://localhost:8080/competences')
-        .then((res) => {
-          user.value.competences = res.data;
-        });
+      .then((res) => {
+        user.value.competences = res.data;
+      });
   } catch (error) {
     console.error(error);
   }
@@ -102,74 +101,58 @@ onMounted(async () => {
 </script>
 
 <template>
-  <header>
-    <h1>Crazy</h1>
-  </header>
   <main>
+
     <div class="left-side">
-      <div>
-        <img src="../assets/img/profile_picture.png" alt="profile picture">
-        <h2>{{ user.name }}</h2>
-        <p class="competence-title">Compétences:</p>
-        <ul class="list-competences">
-          <li v-for="competence in user.userCompetences" :key="competence.id" class="competence-item">
-            <span>{{ competence.name }}</span>
-            <v-rating :model-value="competence.rating" :length="5" half-increments :size="20" readonly
-                      active-color="#45FF30"></v-rating>
-          </li>
-        </ul>
+      <router-link to="/">Crazy</router-link>
+      <div id="left-side-content">
+        <div>
+          <img src="../assets/img/profile_picture.png" alt="profile picture">
+          <h2>{{ user.name }}</h2>
+          <p class="competence-title">Compétences:</p>
+          <ul class="list-competences">
+            <li v-for="competence in user.userCompetences" :key="competence.id" class="competence-item">
+              <span>{{ competence.name }}</span>
+              <v-rating :model-value="competence.rating" :length="5" half-increments :size="20" readonly
+                active-color="#45FF30"></v-rating>
+            </li>
+          </ul>
+        </div>
+        <FormComponent title="Nouvelle compétence ?" button-text="Demander ma compétence" :fields="[
+          { label: 'Quoi?', type: 'text', name: 'nom', placeholder: 'Quoi de neuf', options: user.competences },
+          { label: 'Vraiment?', type: 'rating', name: 'rating' },
+        ]" />
       </div>
-      <FormComponent
-          title="Nouvelle compétence ?"
-          button-text="Demander ma compétence"
-          :fields="[
-            { label: 'Quoi?', type: 'text', name: 'nom', placeholder: 'Quoi de neuf', options: user.competences },
-            { label: 'Vraiment?', type: 'rating', name: 'rating' },
-          ]"
-      />
     </div>
-    <div class="divider"></div>
+
+
     <div class="right-side">
-      <div>
-        <h2>Dernières missions:</h2>
-        <ul class="list">
-          <CarouselComponent :items="user.competences"/>
-        </ul>
-      </div>
+      <h2>Dernières missions:</h2>
+      <ul class="list">
+        <CarouselComponent :items="user.competences" />
+      </ul>
     </div>
+
+
   </main>
 </template>
 
 <style scoped>
-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 30%;
-  border-right: 0.2rem solid #868686;
-  height: 5rem;
-  padding: 0 1.25rem;
-}
-
-header h1 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: normal;
-  font-size: 2.25rem;
-}
-
 main {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
-  min-height: 100vh;
+  height: 100vh;
+  margin-top: 2em;
 }
 
 .left-side {
   width: 100%;
   padding: 0 3.125rem;
-  border-right: 0.2rem solid #868686;
+  margin: 2em 0;
+  border-right: none;
+  border-bottom: 0.2rem solid #afafaf;
   box-sizing: border-box;
-  height: 100%;
 }
 
 .left-side h2 {
@@ -177,23 +160,27 @@ main {
   font-weight: normal;
 }
 
+a {
+  text-decoration: none;
+  color: #000;
+  font-size: 3em;
+  font-weight: bold;
+  font-family: 'Montserrat', sans-serif;
+}
+
+#left-side-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
 .competence-title {
   font-size: 1.25rem;
   font-weight: normal;
   margin-bottom: 0.625rem;
   color: #5F5F5F;
-}
-
-.right-side {
-  width: 100%;
-  padding-left: 3.125rem;
-  box-sizing: border-box;
-  display: flex;
-  height: 100%;
-}
-
-.list-competences {
-  margin-bottom: 2.5rem;
 }
 
 .competence-item {
@@ -213,13 +200,35 @@ main {
   align-self: center;
 }
 
+.list-competences {
+  margin-bottom: 2.5rem;
+}
+
+.right-side {
+  width: 100%;
+  padding-left: 3.125rem;
+}
+
+.right-side h2 {
+  text-decoration: underline;
+}
+
 @media (min-width: 768px) {
-  .left-side, .right-side {
+
+  .left-side,
+  .right-side {
     width: 50%;
   }
+
+  .left-side {
+    border-right: 0.2rem solid #afafaf;
+    border-bottom: none;
+  }
+
 }
 
 @media (min-width: 1024px) {
+
   header {
     width: 30%;
     height: 5rem;
@@ -239,5 +248,6 @@ main {
     width: 70%;
     padding-left: 3.125rem;
   }
+
 }
 </style>
