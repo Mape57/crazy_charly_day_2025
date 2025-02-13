@@ -3,6 +3,7 @@ import {useUserStore} from "@/stores/userStore.js";
 import {onMounted, ref} from "vue";
 import axios from "axios";
 
+
 const userStore = useUserStore();
 
 const user = ref({
@@ -53,6 +54,7 @@ onMounted(async () => {
       </div>
     </div>
   </main>
+
 </template>
 
 <style scoped>
