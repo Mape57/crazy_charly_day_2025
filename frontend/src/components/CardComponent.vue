@@ -1,5 +1,7 @@
 <script setup>
 
+import {onMounted} from "vue";
+
 const props = defineProps({
   title: String,
   subtitle: String,
@@ -8,11 +10,12 @@ const props = defineProps({
   link: String,
 })
 
-
+onMounted(() => {
+})
 </script>
 
 <template>
-    <v-card 
+    <v-card
         class="card"
         :max-width="max"
         link
