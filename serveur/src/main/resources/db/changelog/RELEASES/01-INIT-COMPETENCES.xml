@@ -23,9 +23,39 @@
 
         <insert tableName="competences">
             <column name="id" value="611b06da-0925-45e9-aab2-b2dcf58eb17c"/>
-            <column name="libelle" value="test"/>
+            <column name="libelle" value="AD"/>
             <column name="valide" value="true"/>
-            <column name="categorie" value="test jsp zebi"/>
+            <column name="categorie" value="accompagnement dans les démarches administratives"/>
         </insert>
+
+        <insert tableName="competences">
+            <column name="id" value="674d16e7-e6d3-49fb-9485-740d7fb59fa2"/>
+            <column name="libelle" value="IF"/>
+            <column name="valide" value="true"/>
+            <column name="categorie" value="manipulation d’outil informatique
+"/>
+        </insert>
+
+        <insert tableName="competences">
+            <column name="id" value="7f901d54-0836-4c05-b841-5aee6f96168d"/>
+            <column name="libelle" value="MN"/>
+            <column name="valide" value="true"/>
+            <column name="categorie" value="ménage"/>
+        </insert>
+
+        <insert tableName="competences">
+            <column name="id" value="c2fca0dc-849c-4889-8d0b-497f9cd28b67"/>
+            <column name="libelle" value="JD"/>
+            <column name="valide" value="true"/>
+            <column name="categorie" value="jardinage"/>
+        </insert>
+
+        <insert tableName="competences">
+            <column name="id" value="e44b8905-3cf2-4176-b7ed-61bcd8e3a1dc"/>
+            <column name="libelle" value="BR"/>
+            <column name="valide" value="true"/>
+            <column name="categorie" value="bricolage"/>
+        </insert>
+
     </changeSet>
 </databaseChangeLog>

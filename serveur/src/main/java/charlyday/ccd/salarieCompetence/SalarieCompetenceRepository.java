@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface SalarieCompetenceRepository extends ListCrudRepository<SalarieCompetenceEntity, UUID> {
     List<SalarieCompetenceEntity> findBySalarieCompetenceKeySalarieId(UUID idSalarie);
+    SalarieCompetenceEntity findBySalarieCompetenceKeySalarieIdAndSalarieCompetenceKeyCompetenceId(UUID salarieId, UUID competenceId);
 }
