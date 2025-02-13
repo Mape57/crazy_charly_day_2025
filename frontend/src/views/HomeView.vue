@@ -3,6 +3,10 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
 import { ref } from "vue";
 import BarFormComponent from "@/components/BarFormComponent.vue";
 import SelectedComponent from "@/components/SelectedComponent.vue";
+import CardComponent from "@/components/CardComponent.vue";
+import axios from "axios";
+
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const title = ref('Vous avez un besoin ?');
 const icons = ref([
@@ -27,6 +31,20 @@ const items = ref([
 const save = ref('Créer un besoins');
 
 const logo = ref('Crazy');
+
+const getBesoins = async () => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/besoins`);
+    items.value = response.data;
+    console.log(items.value);
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+getBesoins();
 </script>
 
 <template>
@@ -48,6 +66,7 @@ const logo = ref('Crazy');
   </SelectedComponent>
   <div class="main">
 
+
   </div>
 </template>
 
@@ -55,6 +74,11 @@ const logo = ref('Crazy');
 
 
 .main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 3rem;
 
 }
 </style>

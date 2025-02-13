@@ -13,6 +13,7 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi';
 import App from './App.vue';
 import router from './router';
 
+
 const vuetify = createVuetify({
     components,
     directives,
