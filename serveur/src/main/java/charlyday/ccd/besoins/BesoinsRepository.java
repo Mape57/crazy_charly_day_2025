@@ -1,0 +1,11 @@
+package charlyday.ccd.besoins;
+
+import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
+
+@Repository
+public interface BesoinsRepository extends ListCrudRepository<BesoinsEntity, UUID> {
+
+}
