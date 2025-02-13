@@ -1,5 +1,4 @@
 <script setup>
-
 </script>
 
 <template>
@@ -18,41 +17,43 @@
 
     <template v-slot:default="{ isActive }">
       <v-card
-          style ="padding: 2em; border-radius: 2em; display: flex; flex-direction: column; gap: 2em; justify-items: center;"
+          style="padding: 2em; border-radius: 2em; display: flex; flex-direction: column; gap: 2em; justify-items: center; width: 25vw;"
       >
+        <v-form>
+          <h3 style="text-decoration: underline; font-weight: bold; margin: 1em 0; width: 80%;">Vous venez ?</h3>
 
-          <v-form>
-            <h3 style="text-decoration: underline; font-weight: bold; margin: 1em 0;">Vous venez ?</h3>
+          <div style="margin: auto;">
+            <p style="font-weight: bold;">Qui ?</p>
+            <v-text-field clearable
+                          placeholder="Nom"
+                          variant="underlined"
+                          required
+                          style="--v-input-placeholder-color: black;"
+            ></v-text-field>
+          </div>
 
-            <div>
-              <p style="font-weight: bold">Qui ?</p>
-              <v-text-field clearable
-                            placeholder="Nom"
-                            variant="underlined"
-                            required
-              ></v-text-field>
-            </div>
+          <div style="margin: auto;">
+            <p style="font-weight: bold;">Contact ?</p>
+            <v-text-field clearable
+                          placeholder="Email"
+                          variant="underlined"
+                          required
+                          style="--v-input-placeholder-color: black;"
+            ></v-text-field>
+          </div>
 
-            <div>
-              <p style="font-weight: bold">Contact ?</p>
-              <v-text-field clearable
-                            placeholder="Email"
-                            variant="underlined"
-                            required
-              ></v-text-field>
-            </div>
-
-           <div>
-             <p style="font-weight: bold">Comment ?</p>
-             <v-select
-                 :items="['Besoin 1', 'Besoin 2', 'Besoin 3']"
-                 placeholder="role &#8595;"
-                 variant="solo"
-                 density="comfortable"
-                 required
-             ></v-select>
-           </div>
-          </v-form>
+          <div style="margin: auto;">
+            <p style="font-weight: bold;">Comment ?</p>
+            <v-select
+                :items="['Besoin 1', 'Besoin 2', 'Besoin 3']"
+                placeholder="role &#8595;"
+                variant="solo"
+                density="comfortable"
+                required
+                style="--v-input-placeholder-color: black;"
+            ></v-select>
+          </div>
+        </v-form>
 
         <div style="display: flex; justify-content: center;">
           <v-btn
@@ -68,8 +69,8 @@
 </template>
 
 <style scoped>
-  v-form{
-    display: flex;
-    flex-direction: column;
-  }
+v-form {
+  display: flex;
+  flex-direction: column;
+}
 </style>
