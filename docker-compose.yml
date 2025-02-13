@@ -1,0 +1,69 @@
+services:
+  frontend:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "8084:5173"
+    environment:
+      - NODE_ENV=development
+    command: sh -c "npm install && npm run dev -- --host"
+    env_file:
+      - .env
+    networks:
+      - frontend_backend_network
+
+  backend:
+    build: .
+    volumes:
+      - /backend:/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+
+  db:
+    image: "postgres:16"
+    ports:
+      - "127.0.0.1:${CCD_LOCAL_DB_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./db/init-scripts:/docker-entrypoint-initdb.d/
+      #- ./postgres-data:/var/lib/postgresql/data
+      - ./db/postgresql.conf:/etc/postgresql.conf
+    env_file:
+      - .env
+    networks:
+      - db_rabbitmq_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - .env
+    networks:
+      - db_rabbitmq_network
+
+volumes:
+  postgres_data:
+
+networks:
+  frontend_backend_network:
+    driver: bridge
+  db_rabbitmq_network:
+    driver: bridge
