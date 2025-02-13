@@ -12,10 +12,13 @@ import charlyday.ccd.besoins.BesoinsService;
 import charlyday.ccd.competences.CompetenceEntity;
 import charlyday.ccd.competences.CompetenceService;
 import charlyday.ccd.salarieCompetence.SalarieCompetenceEntity;
+import charlyday.ccd.salarieCompetence.SalarieCompetenceKey;
 import charlyday.ccd.salarieCompetence.SalarieCompetenceService;
 import charlyday.ccd.utilisateur.UtilisateurEntity;
 import charlyday.ccd.utilisateur.UtilisateurService;
 import charlyday.timefold.domain.*;
+import charlyday.timefold.tools.DataReader;
+import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -103,6 +106,16 @@ public class AffectationController {
 		return affectations;
 	}
 
+	@GetMapping("/test")
+	public ResponseEntity<String> saveData() {
+		String path = "src/main/resources/etudiant/02_pb_complexes/Probleme_3_nbSalaries_15_nbClients_15_nbTaches_1.csv";
+		Planification problem = DataReader.read(path);
+
+		List<UtilisateurEntity> utilisateurEntities = problem.getSalaries().stream()
+				.map(this::convertToEntity).toList();
+		return null; // todo
+	}
+
 	private Besoin convertToDomain(BesoinsEntity besoinsEntity) {
 		UUID id = besoinsEntity.getId();
 		UtilisateurEntity clientEntity = utilisateurService.getUtilisateurById(besoinsEntity.getClientId());
@@ -129,5 +142,37 @@ public class AffectationController {
 
 	private Competence convertToDomain(CompetenceEntity competenceEntity) {
 		return new Competence(competenceEntity.getId(), competenceEntity.getLibelle());
+	}
+
+	private UtilisateurEntity convertToEntity(Utilisateur utilisateur) {
+		UtilisateurEntity utilisateurEntity = new UtilisateurEntity();
+		utilisateurEntity.setId(utilisateur.getId());
+		utilisateurEntity.setNom(utilisateur.getNom());
+		utilisateurEntity.setEmail("default@mail.com");
+		utilisateurEntity.setPassword("default");
+		utilisateurEntity.setRole(utilisateurEntity.getRole());
+
+		List<SalarieCompetenceEntity> salarieCompetenceEntities = utilisateur.getCompetences().stream()
+				.map(this::convertToEntity)
+				.toList();
+
+		salarieCompetenceEntities.forEach(salarieCompetenceEntity -> {
+			salarieCompetenceService.createSalarieCompetence(salarieCompetenceEntity);
+		});
+
+		return utilisateurEntity;
+	}
+
+	private SalarieCompetenceEntity convertToEntity(SalarieCompetence salarieCompetence) {
+		SalarieCompetenceEntity salarieCompetenceEntity = new SalarieCompetenceEntity();
+
+		SalarieCompetenceKey salarieCompetenceKey = new SalarieCompetenceKey();
+		salarieCompetenceKey.setSalarieId(salarieCompetence.getSalarie().getId());
+		salarieCompetenceKey.setCompetenceId(salarieCompetence.getCompetence().getId());
+		salarieCompetenceEntity.setSalarieCompetenceKey(salarieCompetenceKey);
+
+		salarieCompetenceEntity.setInteret(salarieCompetence.getInteret());
+
+		return salarieCompetenceEntity;
 	}
 }
