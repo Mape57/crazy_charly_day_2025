@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create-player" author="Thomas">
+        <createTable tableName="player">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birthday" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="courses" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="level" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="validate" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="player">
+            <column name="id" value="35da0040-52f0-4341-bf66-883e5faad39c"/>
+            <column name="name" value="Djokovic"/>
+            <column name="surname" value="Novak"/>
+            <column name="birthday" value="1987-05-22"/>
+            <column name="courses" value="0"/>
+            <column name="level" value="19"/>
+            <column name="email" value="novak.djokovic@gmail.com"/>
+            <column name="validate" value="true"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
