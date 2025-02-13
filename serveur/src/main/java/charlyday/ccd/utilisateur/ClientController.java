@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("salaries")
+@RequestMapping("clients")
 public class ClientController {
     private final UtilisateurService utilisateurService;
     @Autowired
