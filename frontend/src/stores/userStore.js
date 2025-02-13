@@ -4,9 +4,10 @@ import {ref} from "vue";
 export const useUserStore = defineStore('user', {
   state: () => {
     return {
-      id: null,
+      id: "7bdc0155-8ab2-4231-bd9e-a9528264d04b",
       token: null,
-      name: 'Gilles Boulot',
+      name: 'tom',
+      role: 1,
     }
   },
 })

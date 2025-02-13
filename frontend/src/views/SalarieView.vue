@@ -1,6 +1,6 @@
 <script setup>
-import { useUserStore } from "@/stores/userStore.js";
-import { onMounted, ref } from "vue";
+import {useUserStore} from "@/stores/userStore.js";
+import {onMounted, ref} from "vue";
 import axios from "axios";
 import FormComponent from "@/components/FormComponent.vue";
 import CarouselComponent from "@/components/CarouselComponent.vue";
@@ -10,48 +10,20 @@ const userStore = useUserStore();
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
+const categoryImageMap = {
+  administration: '/src/assets/img/administration.png',
+  bricolage: '/src/assets/img/bricolage.png',
+  informatique: '/src/assets/img/informatique.png',
+  jardinage: '/src/assets/img/jardinage.png',
+  menage: '/src/assets/img/menage.png',
+  default: '/src/assets/img/default.png'
+};
+
 const user = ref({
   name: '',
-  userMissions: [
-    {
-      title: 'Mission 1',
-      subtitle: 'Description 1',
-      source: '/src/assets/img/bricolage.png',
-    },
-    {
-      title: 'Mission 2',
-      subtitle: 'Description 1',
-      source: '/src/assets/img/jardinage.png',
-    },
-    {
-      title: 'Mission 3',
-      subtitle: 'Description 1',
-      source: '/src/assets/img/menage.png',
-    },
-    {
-      title: 'Mission 4',
-      subtitle: 'Description 1',
-      source: '/src/assets/img/profile_picture.png',
-    }
-  ],
-  competences: [
-    'Bricolage',
-    'Cuisine',
-    'Jardinage',
-    'Informatique',
-  ],
-  userCompetences: [
-    {
-      id: 1,
-      name: 'Bricolage',
-      rating: 4.5,
-    },
-    {
-      id: 2,
-      name: 'Cuisine',
-      rating: 3,
-    },
-  ]
+  userMissions: [],
+  competences: [],
+  userCompetences: [],
 });
 
 async function getCompetencesBySalarieId(id) {
@@ -70,13 +42,16 @@ async function getCompetencesBySalarieId(id) {
 
 async function getMissionsBySalarieId(id) {
   try {
-    // TODO: modifier l'url
-    const response = await axios.get(`${apiBaseUrl}/salaries/${id}/missions`, {
+    const response = await axios.get(`${apiBaseUrl}/salaries/${id}/besoins`, {
       headers: {
         Authorization: `Bearer ${userStore.token}`,
       },
     }).then((res) => {
-      user.value.userMissions = res.data;
+      console.log(res);
+      user.value.userMissions = res.data.map(mission => ({
+        ...mission,
+        source: categoryImageMap[mission.categorie] || categoryImageMap.default
+      }));
     });
   } catch (error) {
     console.error(error);
@@ -96,9 +71,9 @@ async function getCompetences() {
 
 onMounted(async () => {
   user.value.name = userStore.name;
-  // await getCompetences();
-  // await getMissionsBySalarieId(userStore.id);
-  // await getCompetencesBySalarieId(userStore.id);
+  await getCompetences();
+  await getMissionsBySalarieId(userStore.id);
+  await getCompetencesBySalarieId(userStore.id);
 });
 </script>
 
@@ -113,16 +88,16 @@ onMounted(async () => {
           <p class="competence-title">Compétences:</p>
           <ul class="list-competences">
             <li v-for="competence in user.userCompetences" :key="competence.id" class="competence-item">
-              <span>{{ competence.name }}</span>
+              <span>{{ competence.libelle }}</span>
               <v-rating :model-value="competence.rating" :length="5" half-increments :size="20" readonly
-                active-color="#45FF30"></v-rating>
+                        active-color="#45FF30"></v-rating>
             </li>
           </ul>
         </div>
         <FormComponent title="Nouvelle compétence ?" button-text="Demander ma compétence" :fields="[
-          { label: 'Quoi?', type: 'text', name: 'nom', placeholder: 'Quoi de neuf', options: user.competences },
+          { label: 'Quoi?', type: 'text', name: 'nom', placeholder: 'Quoi de neuf', options: user.competences.map(c => c.libelle)  },
           { label: 'Vraiment?', type: 'rating', name: 'rating' },
-        ]" submit-url="{{apiBaseUrl}}/salaries/1/competences"
+        ]" :submit-url="`salaries/${userStore.id}/competences`"
         />
       </div>
     </div>
