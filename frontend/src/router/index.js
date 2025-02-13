@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import SalarieView from "@/views/SalarieView.vue";
 
@@ -14,11 +14,6 @@ const router = createRouter({
       path: '/salarie',
       name: 'salarie',
       component: SalarieView,
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue'),
     },
   ],
 })

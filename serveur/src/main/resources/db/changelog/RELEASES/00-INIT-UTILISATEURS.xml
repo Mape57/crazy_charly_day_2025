@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create-utilisateurs" author="Thomas">
+        <createTable tableName="utilisateurs">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nom" type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(250)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="utilisateurs">
+            <column name="id" value="7bdc0155-8ab2-4231-bd9e-a9528264d04b"/>
+            <column name="nom" value="Thomas"/>
+            <column name="email" value="thomas@mail.com"/>
+            <column name="password" value="pwd"/>
+            <column name="role" value="1"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
