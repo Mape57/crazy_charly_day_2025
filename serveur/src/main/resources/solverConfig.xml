@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solver xmlns="https://timefold.ai/xsd/solver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://timefold.ai/xsd/solver https://timefold.ai/xsd/solver/solver.xsd">
+    <solutionClass>charlyday.timefold.domain.Planification</solutionClass>
+    <entityClass>charlyday.timefold.domain.Besoin</entityClass>
+
+    <scoreDirectorFactory>
+        <constraintProviderClass>charlyday.timefold.solver.CrazyConstraintProvider</constraintProviderClass>
+    </scoreDirectorFactory>
+
+    <!-- BRUTE_FORCE -->
+    <!--
+    <exhaustiveSearch>
+        <exhaustiveSearchType>BRANCH_AND_BOUND</exhaustiveSearchType>
+        <entitySelector>
+            <entityClass>charlyday.timefold.domain.Besoin</entityClass>
+            <cacheType>PHASE</cacheType>
+        </entitySelector>
+    </exhaustiveSearch>
+    -->
+
+    <constructionHeuristic>
+        <queuedEntityPlacer>
+            <entitySelector id="placerEntitySelector">
+                <entityClass>charlyday.timefold.domain.Besoin</entityClass>
+                <cacheType>PHASE</cacheType>
+            </entitySelector>
+            <changeMoveSelector>
+                <entitySelector mimicSelectorRef="placerEntitySelector"/>
+            </changeMoveSelector>
+        </queuedEntityPlacer>
+    </constructionHeuristic>
+
+    <localSearch>
+        <termination>
+            <unimprovedSecondsSpentLimit>1</unimprovedSecondsSpentLimit>
+        </termination>
+        <acceptor>
+            <entityTabuRatio>0.001</entityTabuRatio>
+        </acceptor>
+        <forager>
+            <acceptedCountLimit>200</acceptedCountLimit>
+            <finalistPodiumType>STRATEGIC_OSCILLATION_BY_LEVEL_ON_BEST_SCORE</finalistPodiumType>
+        </forager>
+    </localSearch>
+</solver>
